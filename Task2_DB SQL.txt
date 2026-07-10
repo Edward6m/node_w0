@@ -1,0 +1,109 @@
+任務二-資料庫 SQL 語法練習
+
+作業一
+班級編號,班級名稱
+學生編號,姓名,班級編號,性別,年齡
+create table classes(
+  class_id SERIAL PRIMARY KEY,
+  class_name VARCHAR(20)
+);
+INSERT INTO
+  classes(class_name)
+VALUES
+  ('三年一班'),
+  ('三年二班');
+create table student(
+    student_id SERIAL PRIMARY KEY,
+    student_name VARCHAR(20),
+    gender VARCHAR(2),
+    age INTEGER,
+    class_id INTEGER,
+    FOREIGN KEY (class_id) REFERENCES classes(class_id)
+  );
+INSERT INTO
+  student(student_name, class_id, gender, age)
+VALUES
+  ('小明', 1, '男', 8),
+  ('小華', 2, '女', 9),
+  ('小美', 1, '男', 8),
+  ('小強', 1, '女', 8),
+  ('小智', 2, '男', 9);
+select  *  FROM  classes;
+select  *  FROM  student;
+select 	s.student_id AS "學生編號",
+  s.student_name AS "姓名", 
+  s.gender AS "性別",
+  s.age AS "年齡", c.class_name as 班級
+from  student s
+INNER JOIN classes c on s.class_id=c.class_id
+
+作業二
+班級編號,班級名稱
+老師編號,老師名稱
+學生編號,姓名,班級編號,老師編號,性別,年齡
+create table classes(
+  class_id SERIAL PRIMARY KEY,
+  class_name VARCHAR(20),
+teacher_name VARCHAR(20)
+);
+INSERT INTO
+  classes(class_name,teacher_name )
+VALUES
+  ('三年一班','廖洧杰'),
+  ('三年二班','卡斯伯');
+
+
+create table student(
+    student_id SERIAL PRIMARY KEY,
+    student_name VARCHAR(20),
+    gender VARCHAR(2),
+    age INTEGER,
+    class_id INTEGER,
+    FOREIGN KEY (class_id) REFERENCES classes(class_id) 
+  );
+INSERT INTO
+  student(student_name, class_id, gender, age )
+VALUES
+  ('小明', 1, '男', 8 ),
+  ('小華', 2, '女', 9 ),
+  ('小美', 1, '男', 8 ),
+  ('小強', 1, '女', 8 ),
+  ('小智', 2, '男', 9 );
+select  *  FROM  classes;
+select  *  FROM  student;
+select s.student_id  as 學生編號, s. student_name as 姓名, s.gender as 性別, s.age as 年齡, c.class_name as 班級名稱, c.teacher_name as 班級老師
+from  student s
+INNER JOIN classes c on s.class_id=c.class_id;
+ 
+
+
+作業三
+父母編號,父母名稱,父母電話,父母性別
+小孩編號,姓名,父母編號
+CREATE TABLE parents(
+ id SERIAL PRIMARY KEY,
+ name VARCHAR(15),
+ phone VARCHAR(10),
+ gender VARCHAR(3)
+);
+INSERT INTO parents( name, phone ,gender) VALUES 
+('王大洋','0973254254','男'),
+('王曉如','0955717855','女');
+CREATE TABLE children(
+id SERIAL PRIMARY KEY,
+name VARCHAR(15),
+parent_id INTEGER,
+FOREIGN KEY (parent_id) REFERENCES parents(id)
+);
+INSERT INTO children( name,parent_id ) VALUES 
+('小明',1),
+('小華',2),
+('小美',1),
+('小強',2),
+('小智',1);
+
+SELECT * FROM children;
+
+SELECT c.id as 小孩編號, c.name as 姓名, p.name as 父母名稱, p.phone as 父母電話, p.gender 父母性別 
+FROM children c
+INNER JOIN parents p ON c.parent_id=p.id;
