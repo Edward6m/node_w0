@@ -38,12 +38,12 @@ const reqListener = (req, res) => {
     } else if (req.url === "/todos" && req.method === "POST") {
       try {
         const parsedBody = JSON.parse(body);
-        const label = parsedBody?.label;
+        const title = parsedBody?.title;
 
-        if (typeof label === "string" && label?.trim() !== "") {
+        if (typeof title === "string" && title?.trim() !== "") {
           const newTodo = {
             id: uuidv4(),
-            label: label.trim(),
+            title: title.trim(),
           };
           todos.push(newTodo);
           successHandle(res, todos, 201); // POST 成功通常回傳 201 Created
@@ -71,11 +71,11 @@ const reqListener = (req, res) => {
         const id = req.url.split("/").pop();
         const index = todos.findIndex((todo) => todo.id === id);
         const parsedBody = JSON.parse(body);
-        const label = parsedBody.label;
+        const title = parsedBody.title;
 
         //  加上型別檢查
-        if (index !== -1 && typeof label === "string" && label?.trim() !== "") {
-          todos[index].label = label?.trim();
+        if (index !== -1 && typeof title === "string" && title?.trim() !== "") {
+          todos[index].title = title?.trim();
           successHandle(res, todos);
         } else {
           errorHandle(res);
